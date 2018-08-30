@@ -1,8 +1,9 @@
 BASEDIR = love.filesystem.getRealDirectory("/packages"):match("(.-)[^%.]+$")
-local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'/hitLogic/?.lua;'
-local myPath2 = 'packages/?.lua;packages/?/init.lua;hitLogic/?.lua;'
+local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'src/combat/?.lua;'..BASEDIR..'src/graphics/?.lua;'
+local myPath2 = 'packages/?.lua;packages/?/init.lua;src/combat/?.lua;'
 package.path = myPath
 love.filesystem.setRequirePath(myPath2)
+
 local class = require 'class'
 local box = class('box')
 
@@ -13,9 +14,8 @@ function box:__init(x, y)
     self.y = y 
 end
 
-function box:setCoords(x, y)
-    self.x = x
-    self.y = y
+function box:reset(x, y)
+    self:__init(x, y)
 end
 
 function box:getX()

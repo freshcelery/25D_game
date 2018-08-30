@@ -1,8 +1,9 @@
 BASEDIR = love.filesystem.getRealDirectory("/packages"):match("(.-)[^%.]+$")
-local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'/hitLogic/?.lua;'
-local myPath2 = 'packages/?.lua;packages/?/init.lua;hitLogic/?.lua;'
+local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'src/combat/?.lua;'..BASEDIR..'src/graphics/?.lua;'
+local myPath2 = 'packages/?.lua;packages/?/init.lua;src/combat/?.lua;'
 package.path = myPath
 love.filesystem.setRequirePath(myPath2)
+
 local class = require 'class'
 local score = class('score')
 

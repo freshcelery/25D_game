@@ -1,51 +1,28 @@
-
-BASEDIR = love.filesystem.getRealDirectory("/packages"):match("(.-)[^%.]+$")
-local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'/hitLogic/?.lua;'
-local myPath2 = 'packages/?.lua;packages/?/init.lua;hitLogic/?.lua;'
+BASEDIR = love.filesystem.getRealDirectory("/src"):match("(.-)[^%.]+$")
+local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'src/combat/?.lua;'..BASEDIR..'src/graphics/?.lua;'
+local myPath2 = 'packages/?.lua;packages/?/init.lua;src/combat/?.lua;'
 package.path = myPath
 love.filesystem.setRequirePath(myPath2)
 
-local class = require 'class'
-local Box = require 'box'
-local Outline = require 'outline'
-local Score = require 'score'
-local startPoints = require 'startPoints'
+local Sprite = require 'sprite'
+local CombatMechanic = require 'combatMechanic'
 
-local success = true
+local sprite = Sprite.new()
+local combatMechanic = CombatMechanic.new()
 
-local random = startPoints()
-random:randomize()
-local box = Box.new(random.x, random.y)
-local outline = Outline.new(random.x, random.y, box)
-local score = Score.new()
-local points = tostring(score.points)
+function love.load()
+    sprite:create("assets/sprites/adventurer.png")
+end
 
 function love.update(dt)
-    success = outline:update(dt, box)
-
-    -- if user fails to keypress in time, do stuff
-    if success == false then
-        success = true
-        score:decrementScore(100)
-        points = tostring(score.points)
-        random:randomize()
-        box:setCoords(random.x, random.y)
-        outline:setCoords(random.x, random.y, box)
-    end
+    combatMechanic:update(dt)
 end
 
 function love.draw()
-    love.graphics.print(points)
-    box:draw()
-    outline:draw(box)
+    -- sprite:draw()
+    combatMechanic:draw()
 end
 
 function love.keypressed(key)
-    if key == "space" then
-        score:addScore(box, outline)
-        points = tostring(score.points)
-        random:randomize()
-        box:setCoords(random.x, random.y)
-        outline:setCoords(random.x, random.y, box)
-    end
+    combatMechanic:keypressed(key)
 end

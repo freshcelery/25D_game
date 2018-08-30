@@ -1,8 +1,9 @@
 BASEDIR = love.filesystem.getRealDirectory("/packages"):match("(.-)[^%.]+$")
-local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'/hitLogic/?.lua;'
-local myPath2 = 'packages/?.lua;packages/?/init.lua;hitLogic/?.lua;'
+local myPath = BASEDIR..'/packages/?.lua;'..BASEDIR..'/packages/?/init.lua;'..BASEDIR..'src/combat/?.lua;'..BASEDIR..'src/graphics/?.lua;'
+local myPath2 = 'packages/?.lua;packages/?/init.lua;src/combat/?.lua;'
 package.path = myPath
 love.filesystem.setRequirePath(myPath2)
+
 local class = require 'class'
 local outline = class('outline')
 
@@ -20,16 +21,8 @@ function outline:__init(x, y, box)
     self.ty = self.y + self.height * 0.5
 end
 
-function outline:setCoords(x, y, box)
-    self.startX = x - ((box.width/2) * (self.sizeMultiplier -1))
-    self.startY = y - ((box.height/2) * (self.sizeMultiplier -1))
-    self.x = self.startX
-    self.y = self.startY
-    self.width = box.width * self.sizeMultiplier
-    self.height = box.height * self.sizeMultiplier
-    self.angle = 0
-    self.tx = self.x + self.width * 0.5
-    self.ty = self.y + self.height * 0.5
+function outline:reset(x, y, box)
+    self:__init(x, y, box)
 end
 
 function outline:draw(box)
